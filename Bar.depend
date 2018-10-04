@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1537499044 source:c:\users\tales\documents\sistemas de informação - 2018-2\algoritmos ii\bar\bar.cpp
+	<stdlib.h>
+	<iostream>
+	<string.h>
+
