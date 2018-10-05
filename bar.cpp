@@ -4,6 +4,8 @@
 #include <string.h>
 using namespace std;
 
+FILE *arq;
+
 typedef struct Produto{
     char nome[30];
     float preco;
@@ -93,6 +95,17 @@ void fecharComanda(float comanda[], int cod_comanda){
     comanda[cod_comanda] = 0;
 }
 
+void salvarArquivo(Produto p[], int linhas){
+    if ((arq = fopen("produtos.txt","w")) == NULL) {
+        printf("\n Erro na abertura do arquivo\n");
+    } else {
+        for(int i=0; i<linhas; i++)
+            fwrite(&p[i],sizeof(Produto),1,arq);
+        printf("Concluido\n");
+        fclose(arq);
+    }
+}
+
 int main(){
     char nome[5][30];
     float preco[5];
@@ -104,6 +117,19 @@ int main(){
     Produto p;
     for(int i=0; i<100; i++)
         comanda[i]=0;
+
+    //leitura dos dados
+    if ((arq = fopen("produtos.txt","r")) == NULL) {
+        printf("\n Erro na abertura do arquivo\n");
+    } else {
+        fread(&p,sizeof(Produto),1,arq);
+        while(!feof(arq)){
+            produtos[iproduto++] = p;
+            printf("a");
+            fread(&p,sizeof(Produto),1,arq);
+        }
+        fclose(arq);
+    }
     int opc = menuPrincipal();
     while(opc!=0){
         switch (opc){
@@ -113,8 +139,7 @@ int main(){
                     scanf("%d",&cod_produto);
                     alteraCardapio(nome,preco,quantidade,5,cod_produto);
             break;
-            case 3: //mostraCardapio(nome,preco,quantidade,5);
-                    mostraCardapioProdutos(produtos, iproduto);
+            case 3: mostraCardapioProdutos(produtos, iproduto);
             break;
             case 4: cout << "Numero da comanda:";
                     scanf("%d",&cod_comanda);
@@ -136,6 +161,7 @@ int main(){
         }
         opc = menuPrincipal();
     }
+    salvarArquivo(produtos,iproduto);
 }
 
 
