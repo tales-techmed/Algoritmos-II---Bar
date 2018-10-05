@@ -1,45 +1,14 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include <iostream>
 #include <string.h>
 using namespace std;
 
-int bebida = 0;
-int dinheiro = 0;
-
-bool colocarDinheiroNaMaquina(){
-    printf("Quanto dinheiro?");
-    scanf("%d", &dinheiro);
-    return true;
-}
-
-bool escolherBebida(int b){
-    bebida = b;
-    return true;
-}
-
-bool entregarBebida(){
- //   if(dinheiro>0){// tem dinheiro na máquina
-  //      if(bebida>0){ // escolheu a bebida
-            bebida=0;
-            dinheiro=0;
-            printf("Bebida entregue\n");
-            return true;
-  //      }
-   // }
-    //printf("Obrigado");
-    //return false;
-}
-
-void menuDeBebidas(){
-    printf("0- Nada\n");
-    printf("1- Refrigerante\n");
-    printf("2- Cerveja\n");
-    printf("3- Agua\n");
-    printf("Escolha a bebida: ");
-    int b=0;
-    scanf("%d", &b);
-    escolherBebida(b);
-}
+typedef struct Produto{
+    char nome[30];
+    float preco;
+    int quantidade;
+};
 
 void alteraCardapio(char nome[][30], float preco[], int quantidade[], int linhas, int linha){
     cout << "Digite o novo nome da bebida " << nome[linha] <<": ";
@@ -64,6 +33,18 @@ void criaCardapio(char nome[][30], float preco[], int quantidade[], int linhas){
     }
 }
 
+void incluirProduto(Produto p){
+    cin.ignore();
+    cout << "Digite o nome da bebida: ";
+    cin.getline(p.nome,sizeof(p.nome));
+    cout << "Digite o preco: ";
+    scanf("%f",&p.preco);
+    cout << "Digite a quantidade: ";
+    scanf("%d",&p.quantidade);
+    cin.ignore();
+    cout << p.nome << " " << p.preco << " "<< p.quantidade << endl;
+}
+
 void mostraCardapio(char nome[][30], float preco[], int quantidade[], int linhas){
     cout << "Cardapio"<<endl;
     for(int i=0; i<linhas; i++){
@@ -80,6 +61,7 @@ int menuPrincipal(){
     cout<< "3 - Mostrar cardapio" << endl;
     cout<< "4 - Vender bebida" << endl;
     cout<< "5 - Fechar comanda" << endl;
+    cout<< "6 - Incluir Produto" << endl;
     cout<< "Sua opcao:" << endl;
     int opc=0;
     scanf("%d",&opc);
@@ -110,6 +92,7 @@ int main(){
     int quantidade[5];
     float comanda[100];
     int cod_produto, cod_comanda, qtd_produto;
+    Produto p;
     for(int i=0; i<100; i++)
         comanda[i]=0;
     int opc = menuPrincipal();
@@ -135,6 +118,9 @@ int main(){
                         "Numero da comanda:";
                     scanf("%d",&cod_comanda);
                     fecharComanda(comanda, cod_comanda);
+            break;
+            case 6 : incluirProduto(p);
+            break;
         }
         opc = menuPrincipal();
     }
