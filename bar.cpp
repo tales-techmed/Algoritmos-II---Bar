@@ -33,16 +33,15 @@ void criaCardapio(char nome[][30], float preco[], int quantidade[], int linhas){
     }
 }
 
-void incluirProduto(Produto p){
+void incluirProduto(Produto *p){
     cin.ignore();
     cout << "Digite o nome da bebida: ";
-    cin.getline(p.nome,sizeof(p.nome));
+    cin.getline(p->nome,sizeof(p->nome));
     cout << "Digite o preco: ";
-    scanf("%f",&p.preco);
+    scanf("%f",&p->preco);
     cout << "Digite a quantidade: ";
-    scanf("%d",&p.quantidade);
+    scanf("%d",&p->quantidade);
     cin.ignore();
-    cout << p.nome << " " << p.preco << " "<< p.quantidade << endl;
 }
 
 void mostraCardapio(char nome[][30], float preco[], int quantidade[], int linhas){
@@ -50,6 +49,14 @@ void mostraCardapio(char nome[][30], float preco[], int quantidade[], int linhas
     for(int i=0; i<linhas; i++){
         cout << i << " " << nome[i] << " - " << preco[i] << " - " <<
             quantidade[i]<<endl;
+    }
+}
+void mostraCardapioProdutos(Produto p[], int linhas){
+    cout << "Cardapio"<<endl;
+    for(int i=0; i<linhas; i++){
+        cout << i << " " << p[i].nome << " - "
+        << p[i].preco << " - " <<
+        p[i].quantidade<<endl;
     }
 }
 
@@ -91,6 +98,8 @@ int main(){
     float preco[5];
     int quantidade[5];
     float comanda[100];
+    Produto produtos[20];
+    int iproduto=0;
     int cod_produto, cod_comanda, qtd_produto;
     Produto p;
     for(int i=0; i<100; i++)
@@ -104,7 +113,8 @@ int main(){
                     scanf("%d",&cod_produto);
                     alteraCardapio(nome,preco,quantidade,5,cod_produto);
             break;
-            case 3: mostraCardapio(nome,preco,quantidade,5);
+            case 3: //mostraCardapio(nome,preco,quantidade,5);
+                    mostraCardapioProdutos(produtos, iproduto);
             break;
             case 4: cout << "Numero da comanda:";
                     scanf("%d",&cod_comanda);
@@ -119,7 +129,9 @@ int main(){
                     scanf("%d",&cod_comanda);
                     fecharComanda(comanda, cod_comanda);
             break;
-            case 6 : incluirProduto(p);
+            case 6 : incluirProduto(&p);
+                produtos[iproduto++] = p;
+                cout << p.nome << " " << p.preco << " "<< p.quantidade << endl;
             break;
         }
         opc = menuPrincipal();
